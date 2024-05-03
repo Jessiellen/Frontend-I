@@ -1,9 +1,9 @@
-FROM python:3.12-slim
+# FROM python:3.12-slim
 
-WORKDIR /app
+# WORKDIR /app
         
-COPY . .
+# COPY . .
         
-EXPOSE 8000
+# EXPOSE 8000
         
-# RUN poetry install
+# # RUN poetry install
