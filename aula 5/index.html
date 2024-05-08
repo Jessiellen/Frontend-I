@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Fetch API</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+
+  <div id="data-container"></div>
+
+  <button onclick="getData()">GET</button>
+  <!-- <button onclick="postData()">POST</button> -->
+
+  <form action="http://localhost:3000/data" method="post">
+    <label for="text-input" id="label-username">Username</label>
+    <div class="info" id="username-info">i</div>
+    <input type="text" name="text" id="text-input">
+    <label for="password-input" id="label-password">Password</label>
+    <div class="info" id="pass-info">i</div>
+    <input type="password" name="password" id="password-input">
+    <div id="void"></div>
+    <input type="submit" value="Submit">
+  </form>
+
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+* {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+button {
+    display: block;
+    width: fit-content;
+    border: none;
+    background-color: #cccccc;
+    padding: 10px 20px;
+}
+
+form {
+    display: grid;
+    grid-template-areas: 
+        "label-username user-info"
+        "input-username input-username"
+        "label-pass pass-info"
+        "input-password input-password"
+        "void submit";
+    max-width: 320px;
+    gap: 10px; 
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.info {
+    background-color: #075fbd;
+    padding: 5px;
+    width: fit-content;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-top: ;
+    cursor: pointer;
+    border-radius: 999px;
+    justify-self: end;
+}
+
+label {
+    margin-top: 5px;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #cccccc;
+}
+
+input[type="submit"] {
+    margin-top: 15px;
+    background-color: #075fbd;
+    color: white;
+    cursor: pointer;
+    text-transform: capitalize;
+    margin-left: auto;
+}
+
+#lable-username {
+    grid-area: label-info;
+}
+#lable-password {
+    grid-area: label-info;
+}
+#user-info {
+    grid-area: user-info;
+}
+#input-username {
+    grid-area: input-password;
+}
+#pass-inf {
+    grid-area: pass-info;
+}
+#password-info {
+    grid-area: password-info;
+}
