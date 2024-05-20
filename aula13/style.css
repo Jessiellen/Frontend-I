@@ -1,0 +1,40 @@
+:root {
+    --color-primary: #0ff126;
+    --color-secondary: #2c3e50;
+    --color-text: #212121;
+    --font-family: system-ui, sans-serif;
+    --speed: 1s;
+
+    --galery-width: 200px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--color-text);
+}
+
+html,
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100dvh;
+    perspective: 800px;
+}
+
+web-gallery {
+    /* display: block; */
+    position: absolute;
+    transform: rotateY(0);
+    transition: transform 1s ease-in-out;
+}
+
+web-gallery-detail {
+    /* display: none; */
+    position: absolute;
+    transform: rotateY(45deg);
+    transition: transform 1s ease-in-out;
+}
