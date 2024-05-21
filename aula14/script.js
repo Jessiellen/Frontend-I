@@ -1,0 +1,75 @@
+import GalleryModel  from "./model.js";
+
+window.onload = async () => {
+    const webGallery = document.querySelector("web-gallery");
+    const webGalleryDetail = document.querySelector("web-gallery-detail");
+
+    webGallery.addEventListener("item-clicked", (event) => {
+        webGalleryDetail.data = event.detail.data;
+
+
+
+        webGallery.style.opacity=0;
+        webGallery.style.transform = "rotateY(-180deg)";
+        webGallery.style.pointerEvents = "none";
+
+        webGalleryDetail.style.opacity=1;
+        webGalleryDetail.style.transform = "rotateY(0deg)";
+        webGalleryDetail.style.pointerEvents = "initial";
+    });
+
+
+    webGalleryDetail.addEventListener("close-detail", () => {
+        webGallery.style.opacity=1;
+        webGallery.style.transform = "rotateY(0deg)";
+        webGallery.style.pointerEvents = "initial";
+
+        webGalleryDetail.style.opacity=0;
+        webGalleryDetail.style.transform = "rotateY(180deg)";
+        webGalleryDetail.style.pointerEvents = "none";
+
+    });
+
+
+    // webGallery.dataURL = "assets/gallery_data.json";
+
+    const galleryModel = new GalleryModel();
+    await galleryModel.initialize("assets/gallery_data.json");
+    webGallery.data = galleryModel.data;
+    // galleryModel.addItem ({
+    //     title: "new item",
+    //     description:"new Desc",
+    //     imagUrl: "new url"
+    // })
+
+    
+    webGallery.currentItem = 2;
+
+    // const itemToUpdate = galleryModel.data[3];
+    // itemToUpdate.title = "new title 2";
+    // galleryModel.updateItem(3, itemToUpdate);
+
+    // galleryModel.deleteItem(2);
+
+    // galleryModel.reset(2);
+
+
+    document.querySelector("#updater").onsubmit = (ev) => {
+
+
+        ev.preventDefault();
+
+        const title = document.querySelector("#title").value;
+        const desc = document.querySelector("#desc").value;
+        const url = document.querySelector("#url").value;
+
+        galleryModel.addItem({
+            title: title,
+            description: desc,
+            imageUrl: url
+        });
+        webGallery.data = galleryModel.data;
+    }
+
+
+}
