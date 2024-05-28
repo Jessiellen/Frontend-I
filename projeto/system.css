@@ -1,16 +1,18 @@
 :root {
-    /**Colors */
 
+    /* COLORS */
     --color-primary: #FFA800;
-    --color-secundary: #BB0000;
+    --color-secondary: #BB0000;
     --color-terciary: #89BD54;
     --color-text-dark: #444444;
-    --color-text-light:#EEEEEE;
+    --color-text-light: #EEEEEE;
 
-    /** Padding e Margins */
+    /** PADDING & MARGINS */
+    --h-padding: 20px;
+    --v-padding: 20px;
+    --gap: 20px;
 
-    --h--padding: 20px;
-    --v--padding: 20px;
+    --speed: 0.5s;
 }
 
 

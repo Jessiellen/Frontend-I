@@ -1,88 +1,112 @@
+import TodoModel from "./TodoModel.js";
+
 window.onload = async () => {
+  // if ('serviceWorker' in navigator) {
+  //   window.addEventListener('load', () => {
+  //     navigator.serviceWorker.register('/service-worker.js')
+  //       .then(registration => {
+  //         console.log('Service Worker registrado com sucesso: ', registration);
+  //       })
+  //       .catch(error => {
+  //         console.log('Falha ao registrar o Service Worker: ', error);
+  //       });
+  //   });
+  // }
 
-    // O teu código aqui...
-}
+  const tasksContainer = document.querySelector("#tasks");
+  const itemsContainer = document.querySelector("#items");   
+  let currentTaskIndex;
 
+  const model = new TodoModel();
 
-class ItemComponent extends HTMLElement {
-    #front;
-    #touchX;
-    #maxX = 84;
-    #currentX;
-    #callback;
+  const listsContainer = document.querySelector("#lists-container");
+  const lists = document.querySelectorAll("ul");
+  lists.forEach(ul => {
+    ul.style.height = `${listsContainer.offsetHeight}px`;
+  });
   
-    constructor() {
-      super();
-      this.#callback = (message) => console.log(message);
-  
-      const shadow = this.attachShadow({ mode: 'open' });
-  
-      shadow.innerHTML = `
-        <style>
-          .button {
-            position: relative;
-            width: 100px;
-            height: 50px;
-            background-color: #eee;
-            cursor: pointer;
-          }
-          .front {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: #ccc;
-            transition: transform 0.15s ease-in-out;
-          }
-        </style>
-        <div class="button">
-          <div class="front"></div>
-        </div>
-      `;
-  
-      this.view = shadow.querySelector(".button");
-      this.#front = this.view.querySelector(".front");
-      
-      this.mouseUp = this.mouseUp.bind(this);
-      this.mouseMove = this.mouseMove.bind(this);
-      this.view.onmousedown = (ev) => this.#mouseDown(ev);
-      this.view.onclick = () => {
-        if (this.#currentX === 0) this.#callback("clicked");
-      };
-    }
-  
-    #mouseDown(ev) {
-      this.#touchX = ev.x;
-      document.addEventListener("mouseup", this.mouseUp);
-      document.addEventListener("mousemove", this.mouseMove);
-      this.#front.style.transition = 'none';
-      this.#currentX = 0;
-    }
-  
-    mouseUp() {
-      document.removeEventListener("mouseup", this.mouseUp);
-      document.removeEventListener("mousemove", this.mouseMove);
-  
-      if (this.#currentX === this.#maxX) this.#callback("delete!");
-  
-      this.#front.style.transition = 'transform .15s ease-in-out';
-      this.#front.style.transform = 'translateX(0)';
-  
-      this.#touchX = 0;
-    }
-  
-    mouseMove(ev) {
-      this.#currentX = this.#touchX - ev.x;
-      if (this.#currentX < 0) this.#currentX = 0;
-      if (this.#currentX > this.#maxX) this.#currentX = this.#maxX;
-  
-      this.#front.style.transform = `translateX(-${this.#currentX}px)`;
-    }
-  }
-  
-  customElements.define('item-component', ItemComponent);
-  
-  window.onload = () => {
-    const item = document.createElement('item-component');
-    document.body.appendChild(item);
+  const todoHeader = document.querySelector("todo-header");
+  todoHeader.state = "tasks";
+    
+  const handleHeaderClick = () => {
+    listsContainer.style.transform = "translateX(0)";
+    todoHeader.state = "tasks";
+    buildTasksList(model.getTasks());
   };
   
+  const handleHeaderKeydown = (event) => {
+    if (event.key === "Enter" || event.key === "Escape") {
+      handleHeaderClick();
+    }
+  };
+
+  todoHeader.addEventListener("click", handleHeaderClick);
+  todoHeader.addEventListener("keydown", handleHeaderKeydown);
+
+  // MODAL
+  const todoModal = document.querySelector("todo-modal");
+  todoModal.addEventListener("confirm", (ev) => {
+    if (todoHeader.getAttribute("state") === "tasks") {
+      model.addTask(ev.detail.value);
+      buildTasksList(model.getTasks());
+    } else {
+      console.log(currentTaskIndex);
+      model.addItem(currentTaskIndex, ev.detail.value);
+      buildItemsList(model.getItems(currentTaskIndex));
+    }
+  });
+
+  // FOOTER
+  const footer = document.querySelector("footer");
+  footer.onclick = () => {
+    todoModal.show(todoHeader.getAttribute("state"));
+  };
+
+  const buildTasksList = (tasks) => {
+    const tasksList = document.querySelector("#tasks");
+    tasksList.innerHTML = "";
+
+    tasks.forEach((task, index) => {
+      const li = document.createElement("li");
+      const taskItem = new TaskItem();
+      taskItem.addEventListener("clicked", () => {
+        listsContainer.style.transform = "translateX(-100%)";
+        todoHeader.state = "items";
+        todoHeader.taskName = task.title;
+        buildItemsList(task.items);
+        currentTaskIndex = index;
+      });
+      taskItem.addEventListener("delete", () => {
+        model.deleteTask(index);
+        buildTasksList(model.getTasks());
+      });
+      taskItem.title = task.title;
+
+      li.append(taskItem);
+      tasksList.append(li);
+    });
+  };
+
+  const buildItemsList = (items) => {
+    const checkItemsList = document.querySelector("#items");
+    checkItemsList.innerHTML = "";
+    items.forEach((item, index) => {
+      const li = document.createElement("li");
+      const checkItem = new CheckItem();
+      checkItem.addEventListener("checked", (ev) => {
+        model.updateItem(currentTaskIndex, index, ev.detail.checked);
+      });
+      checkItem.addEventListener("delete", () => {
+        model.deleteItem(currentTaskIndex, index);
+        buildItemsList(model.getItems(currentTaskIndex));
+      });
+      checkItem.title = item.title;
+      checkItem.checked = item.checked;
+
+      li.append(checkItem);
+      checkItemsList.append(li);
+    });
+  };
+
+  buildTasksList(model.getTasks());
+};
