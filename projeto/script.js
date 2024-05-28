@@ -66,6 +66,14 @@ window.onload = async () => {
     const tasksList = document.querySelector("#tasks");
     tasksList.innerHTML = "";
 
+    if (tasks.length === 0) {
+      const li = document.createElement("li");
+      li.id = "list-tasks";
+      li.innerText = "Add Tasks"
+      tasksList.append(li);
+      return;
+  }
+
     tasks.forEach((task, index) => {
       const li = document.createElement("li");
       const taskItem = new TaskItem();
@@ -90,6 +98,14 @@ window.onload = async () => {
   const buildItemsList = (items) => {
     const checkItemsList = document.querySelector("#items");
     checkItemsList.innerHTML = "";
+
+    if (items.length === 0) {
+      const li = document.createElement("li");
+      li.id = "list-items";
+      li.innerText = "Add Items"
+      checkItemsList.append(li);
+      return;
+  }
     items.forEach((item, index) => {
       const li = document.createElement("li");
       const checkItem = new CheckItem();

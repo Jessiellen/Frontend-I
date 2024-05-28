@@ -410,8 +410,6 @@ class CheckItem extends Item {
     }
 }
 customElements.define("check-item", CheckItem);
-
-
 /**TODO MODAL */
 const todoModalTemplate = document.createElement("template");
 todoModalTemplate.innerHTML = `
@@ -530,6 +528,18 @@ class TodoModal extends HTMLElement {
             this.hide();
         }
 
+        this.shadowRoot.querySelector("input").onkeydown = (ev) => {
+            if(ev.key === "Enter") {
+                this.shadowRoot.querySelector("#confirm").click();
+            }
+        };
+
+        document.onkeydown = (ev) => {
+            if(ev.key === "Escape") {
+                this.hide();
+            }
+        };
+
         const input = this.shadowRoot.querySelector("input");
         this.shadowRoot.querySelector("#confirm").onclick = () => {
             if(input.value.trim() === "") return;
@@ -560,4 +570,4 @@ class TodoModal extends HTMLElement {
         this.style.display = "none";
     }
 }
-customElements.define("todo-modal", TodoModal);
+customElements.define("todo-modal", TodoModal)

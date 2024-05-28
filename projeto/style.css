@@ -14,8 +14,8 @@ body {
     height: 100dvh;
     justify-content: center;
     align-items: center;
-    scrollbar-color: rgb(122, 122, 124)rgb(125, 48, 52);
-    scrollbar-width: 12px
+    scrollbar-color: rgba(237, 77, 9, 0.729) rgba(114, 114, 111, 0.636);
+    scrollbar-width: 100px;
 }
 
 main {
@@ -49,8 +49,24 @@ ul {
     background-color: #EEEEEE;
 }
 
+#list-tasks {
+    font-size: clamp(32px, 4vw, 48px);
+    color: var(--color-text-light);
+    align-items: center;
+    padding: 20px;
+    opacity: 0.5;
+}
+
 #items {
     background-color: #444444;
+}
+
+#list-items {
+    font-size: clamp(32px, 4vw, 48px);
+    color: var(--color-text-light);
+    align-items: center;
+    padding: 20px;
+    opacity: 0.5;
 }
 
 footer {
